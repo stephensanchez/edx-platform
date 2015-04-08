@@ -1,4 +1,4 @@
-;(function (define, undefined) {
+;(function (define) {
     'use strict';
     define([
         'gettext', 'jquery', 'underscore', 'backbone',
@@ -10,7 +10,7 @@
     ], function (gettext, $, _, Backbone, FieldViews, UserAccountModel, UserPreferencesModel,
                  AccountSettingsFieldViews, AccountSettingsView) {
 
-        return function (fieldsData, authData, userAccountsApiUrl, userPreferencesApiUrl) {
+        return function (fieldsData, authData, userAccountsApiUrl, userPreferencesApiUrl, userID) {
 
             var accountSettingsElement = $('.wrapper-account-settings');
 
@@ -37,6 +37,8 @@
                                 model: userAccountModel,
                                 title: gettext('Full Name'),
                                 valueAttribute: 'name',
+                                changeAnalyticsName: 'edx.user.settings.change_initiated',
+                                userID: userID,
                                 helpMessage: gettext('The name that appears on your edX certificates. Other learners never see your full name.')
                             })
                         },

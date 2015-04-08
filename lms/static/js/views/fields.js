@@ -1,8 +1,8 @@
-;(function (define, undefined) {
+;(function (define) {
     'use strict';
     define([
-        'gettext', 'jquery', 'underscore', 'backbone', 'js/mustache', 'backbone-super'
-    ], function (gettext, $, _, Backbone, RequireMustache) {
+        'gettext', 'jquery', 'underscore', 'backbone', 'js/mustache', 'logger', 'backbone-super'
+    ], function (gettext, $, _, Backbone, RequireMustache, Logger) {
 
         var Mustache = window.Mustache || RequireMustache;
 
@@ -42,6 +42,8 @@
 
                 this.helpMessage = this.options.helpMessage || '';
                 this.showMessages = _.isUndefined(this.options.showMessages) ? true : this.options.showMessages;
+                this.changeAnalyticsName = _.isUndefined(this.options.changeAnalyticsName) ? null : this.options.changeAnalyticsName;
+                this.userID = _.isUndefined(this.options.userID) ? null : this.options.userID;
 
                 _.bindAll(this, 'modelValue', 'modelValueIsSet', 'message', 'getMessage', 'title',
                           'showHelpMessage', 'showInProgressMessage', 'showSuccessMessage', 'showErrorMessage');
@@ -52,7 +54,7 @@
             },
 
             modelValueIsSet: function() {
-                return (this.modelValue() == true);
+                return (this.modelValue() === true);
             },
 
             message: function (message) {
@@ -154,6 +156,18 @@
                     }
                 };
                 this.showInProgressMessage();
+                // Logging that a change was initiated. Need to get
+               // setting name and old and new values.
+                if (this.changeAnalyticsName) {
+                    debugger
+                    Logger.log(this.changeAnalyticsName, {
+                        user_id: this.userID,
+                        settings: {
+                            name: {old_value: "foo", new_value: "bar"},
+                            email: {old_value: "christina", new_value: "chris"}
+                        }
+                    });
+                }
                 this.model.save(attributes, _.extend(defaultOptions, options));
             },
 

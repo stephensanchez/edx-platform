@@ -143,7 +143,7 @@
             },
 
             saveAttributes: function (attributes, options) {
-                var view = this;
+                var view = this, settings = {};
                 var defaultOptions = {
                     contentType: 'application/merge-patch+json',
                     patch: true,
@@ -156,16 +156,15 @@
                     }
                 };
                 this.showInProgressMessage();
-                // Logging that a change was initiated. Need to get
-               // setting name and old and new values.
+
+                // If change analytics logging is desired, emit a changed_initiated event.
                 if (this.changeAnalyticsName) {
-                    debugger
+                    for (var key in attributes) {
+                        settings[key] = {old_value: this.model.get(key), new_value: attributes[key]};
+                    }
                     Logger.log(this.changeAnalyticsName, {
                         user_id: this.userID,
-                        settings: {
-                            name: {old_value: "foo", new_value: "bar"},
-                            email: {old_value: "christina", new_value: "chris"}
-                        }
+                        settings: settings
                     });
                 }
                 this.model.save(attributes, _.extend(defaultOptions, options));

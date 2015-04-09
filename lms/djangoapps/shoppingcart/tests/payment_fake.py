@@ -202,9 +202,6 @@ class PaymentFakeView(View):
         Render the payment page to a response.  This is an HTML form
         that triggers a POST request to `callback_url`.
 
-        The POST params are described in the CyberSource documentation:
-        http://apps.cybersource.com/library/documentation/dev_guides/HOP_UG/html/wwhelp/wwhimpl/js/html/wwhelp.htm
-
         To figure out the POST params to send to the callback,
         we either:
 
